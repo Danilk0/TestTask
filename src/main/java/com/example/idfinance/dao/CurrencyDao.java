@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.Session;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,6 +22,12 @@ public class CurrencyDao {
                 .uniqueResult();
     }
 
+    public void updatePriceByName(Session session, String symbol, BigDecimal price){
+        var query = session.createQuery("update Currency c set c.price = :price where c.symbol= :symbol")
+                .setParameter("price",price)
+                .setParameter("symbol",symbol);
+        query.executeUpdate();
+    }
 
 
     public static CurrencyDao getInstance() {
